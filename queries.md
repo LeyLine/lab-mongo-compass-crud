@@ -33,12 +33,32 @@
 
 ## 7. Find all the companies that do not include `web` nor `social` on their **category_code**. Limit the search to 20 documents and retrieve only their `name` and `category_code`.
 
+* **`query`**: { $nor: [ { category_code: 'web' }, { category_code: 'social' } ] }
+* **`projection`**: {name:1, category_code:1, \_id:0}
+* **`Limit`**: Limit 20
+
 ## 8. Find all the companies that were not **founded** on 'June'. Skip the first 50 results and retrieve only the `founded_month` and `name` fields.
+
+* **`query`**: {founded_month : {$ne:6}}
+* **`projection`**:{founded_month: 1 , name: 1 , \_id: 0}
+* **`Skip`**: Skip 50
 
 ## 9. Find all the companies that have 50 employees, but do not correspond to the 'web' **category_code**.
 
+* **`query`**: { category_code : { $ne }:'web' , number_of_employees : 50 }
+
 ## 10. Find all the companies that have been founded on the 1st of the month, but does not have either 50 employees nor 'web' as their **category_code**. Retrieve only the `founded_day` and `name` and limit the search to 5 documents.
+
+* **`query`**: { $and : [ {founded_day : 1}, { $or : [ { number_of_employees : { $ne:50 } }, { category_code: { $ne: 'web' } } ] } ] }
+* **`projection`**:{ name: 1 , founded_day: 1 , \_id : 0 }
+* **`Limit`**: Limit 5
 
 ## 11. Find all the companies which the `price_amount` of the `acquisition` was **`40.000.000`**. Sort them by `name`.
 
+* **`query`**:{'acquisition.price_amount': 40000000}
+* **`sort`**: {name:1}
+
 ## 12. Find all the companies that have been acquired on January of 2014. Retrieve only the `acquisition` and `name` fields.
+
+* **`query`**: {$and : [{'acquisition.acquired_month':1}, {'acquisition.acquired_year':2014}]}
+* **`sort`**: {acquisition:1 , name:1 , \_id:0}
